@@ -1,0 +1,29 @@
+# stage_config
+
+A [Skyline](https://github.com/skyline-dev/skyline) plugin for Super Smash Bros. Ultimate that enables the use and modification of stage features that are otherwise hardcoded into the game.
+
+The latest release can be found [here](https://github.com/ThatNintendoNerd/stage_config/releases/latest).
+
+## Features
+
+Through the use of a configuration file, a stage mod can take advantage of the following features:
+
+- New dynamic ground collisions
+- Flatten or unflatten battle objects
+- Custom center of gravity or the removal thereof
+- Use of `stage_additional_setting` values from spirit battles outside of Spirits
+- Discard specialized stage programming
+
+For more information about these features, please read the [wiki](https://github.com/ThatNintendoNerd/stage_config/wiki).
+
+## Building
+
+NOTE: This project cannot be compiled without the smash_stage library. Said library is unreleased due to its incomplete state, but its release is planned.
+
+With an up-to-date version of the Rust toolchain installed and [cargo-skyline](https://github.com/jam1garner/cargo-skyline) 3.0.0 or newer, run the following command to compile the project in release mode:
+
+```
+cargo skyline build --release
+```
+
+The resulting build is found at `./target/aarch64-skyline-switch/release/libstage_config.nro`
