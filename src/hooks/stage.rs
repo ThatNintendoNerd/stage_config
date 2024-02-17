@@ -15,7 +15,7 @@ pub fn stage_base_pre_setup(stage_base: &StageBase) {
 
 #[skyline::hook(offset = OFFSETS.is_flat_stage)]
 pub fn is_flat_stage(stage_id: StageID) -> bool {
-    for (stage, value) in CONFIG.is_flat_stage.iter() {
+    for (stage, value) in &CONFIG.is_flat_stage {
         if *stage == stage_id {
             return *value;
         }
@@ -25,7 +25,7 @@ pub fn is_flat_stage(stage_id: StageID) -> bool {
 }
 
 pub fn patch_create_stage_jump_table() {
-    for stage in CONFIG.discard_stage_code.iter() {
+    for stage in &CONFIG.discard_stage_code {
         Patch::in_text(
             OFFSETS.create_stage_jump_table + (*stage as usize) * mem::size_of::<StageID>(),
         )

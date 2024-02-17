@@ -13,7 +13,7 @@ pub fn set_stage_random_settings(stage_description: &mut StageDescription, seed:
     ) {
         let stage_id = stage_description.stage_id();
 
-        for (stage, setting) in CONFIG.stage_additional_settings.iter() {
+        for (stage, setting) in &CONFIG.stage_additional_settings {
             if *stage == stage_id && *setting != 0 {
                 let mut spirits_battle_data = SpiritsBattleData::default();
 

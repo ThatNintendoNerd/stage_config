@@ -29,7 +29,7 @@ struct GravityCenter {
 }
 
 pub fn set_gravity_param(stage_id: StageID) {
-    for (stage, param) in CONFIG.gravity_param.iter() {
+    for (stage, param) in &CONFIG.gravity_param {
         if *stage == stage_id {
             if let Some(instance) = app::BattleObjectWorld::instance_mut() {
                 if instance.is_gravity_normal != param.is_gravity_normal {
