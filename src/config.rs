@@ -28,17 +28,20 @@ pub static CONFIG: Lazy<Config> = Lazy::new(|| {
 
         entry_path.push("config_stage.toml");
 
-        if entry_path.is_file() {
-            if let Ok(string) = fs::read_to_string(&entry_path) {
-                match toml::from_str(&string) {
-                    Ok(cfg) => config.merge(cfg),
-                    Err(e) => {
-                        eprintln!(
-                            "[stage_config::config] Failed to parse TOML data from file '{}': {}",
-                            entry_path.display(),
-                            e
-                        );
-                    }
+        if !entry_path.is_file() {
+            continue;
+        }
+
+        if let Ok(string) = fs::read_to_string(&entry_path) {
+            match toml::from_str(&string) {
+                Ok(cfg) => config.merge(cfg),
+                Err(error) => {
+                    eprintln!(
+                        "[{}] Failed to parse TOML data from file '{}': {}",
+                        module_path!(),
+                        entry_path.display(),
+                        error,
+                    );
                 }
             }
         }
