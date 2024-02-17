@@ -32,17 +32,25 @@ pub static CONFIG: Lazy<Config> = Lazy::new(|| {
             continue;
         }
 
-        if let Ok(string) = fs::read_to_string(&entry_path) {
-            match toml::from_str(&string) {
+        match fs::read_to_string(&entry_path) {
+            Ok(string) => match toml::from_str(&string) {
                 Ok(cfg) => config.merge(cfg),
                 Err(error) => {
                     eprintln!(
-                        "[{}] Failed to parse TOML data from file '{}': {}",
+                        "[{}] Failed to parse TOML file data from '{}': {}",
                         module_path!(),
                         entry_path.display(),
                         error,
                     );
                 }
+            },
+            Err(error) => {
+                eprintln!(
+                    "[{}] Failed to read TOML file data from '{}': {}",
+                    module_path!(),
+                    entry_path.display(),
+                    error,
+                );
             }
         }
     }
