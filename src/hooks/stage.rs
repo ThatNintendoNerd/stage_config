@@ -29,7 +29,7 @@ pub fn patch_create_stage_jump_table() {
         Patch::in_text(
             OFFSETS.create_stage_jump_table + (*stage as usize) * mem::size_of::<StageID>(),
         )
-        .data(0xFE12E38C_u32)
+        .data(0xFE12DFBC_u32)
         .unwrap();
     }
 }

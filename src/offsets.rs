@@ -17,17 +17,17 @@ impl Offsets {
 
         Self {
             stage_base_pre_setup: Self::find(text, STAGE_BASE_PRE_SETUP_SEARCH_CODE)
-                .unwrap_or(0x25D8160),
-            is_flat_stage: Self::find(text, IS_FLAT_STAGE_SEARCH_CODE).unwrap_or(0x261CAF0),
+                .unwrap_or(0x25D8DE0),
+            is_flat_stage: Self::find(text, IS_FLAT_STAGE_SEARCH_CODE).unwrap_or(0x261D770),
             set_stage_random_settings: Self::find(text, SET_STAGE_RANDOM_SETTINGS_SEARCH_CODE)
-                .unwrap_or(0x1779EB0),
+                .unwrap_or(0x177A980),
             set_stage_additional_settings: Self::find(
                 text,
                 SET_STAGE_ADDITIONAL_SETTINGS_SEARCH_CODE,
             )
-            .unwrap_or(0x24979E0),
+            .unwrap_or(0x2498660),
             create_stage_jump_table: Self::find(text, CREATE_STAGE_JUMP_TABLE_SEARCH_CODE)
-                .unwrap_or(0x4504DA0),
+                .unwrap_or(0x4505DF0),
         }
     }
 
@@ -95,5 +95,5 @@ static SET_STAGE_ADDITIONAL_SETTINGS_SEARCH_CODE: &[u8] = &[
 
 #[rustfmt::skip]
 static CREATE_STAGE_JUMP_TABLE_SEARCH_CODE: &[u8] = &[
-    0x88, 0x7F, 0x13, 0xFE,
+    0xB8, 0x7B, 0x13, 0xFE,
 ];
