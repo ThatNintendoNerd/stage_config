@@ -30,18 +30,23 @@ struct GravityCenter {
 pub fn set_gravity_param(stage_id: StageID) {
     use smash::app;
 
-    if let Some(param) = CONFIG.gravity_param.get(&stage_id) {
-        if let Some(instance) = app::BattleObjectWorld::instance_mut() {
-            if instance.is_gravity_normal != param.is_gravity_normal {
-                instance.is_gravity_normal = param.is_gravity_normal;
-            }
+    let Some(param) = CONFIG.gravity_param.get(&stage_id) else {
+        return;
+    };
+    let Some(instance) = app::BattleObjectWorld::instance_mut() else {
+        return;
+    };
 
-            if !instance.is_gravity_normal {
-                if let Some(pos) = &param.pos {
-                    instance.gravity_pos.x = pos.x;
-                    instance.gravity_pos.y = pos.y;
-                }
-            }
-        }
+    if instance.is_gravity_normal != param.is_gravity_normal {
+        instance.is_gravity_normal = param.is_gravity_normal;
+    }
+
+    if instance.is_gravity_normal {
+        return;
+    }
+
+    if let Some(pos) = &param.pos {
+        instance.gravity_pos.x = pos.x;
+        instance.gravity_pos.y = pos.y;
     }
 }
