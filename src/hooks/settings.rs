@@ -7,8 +7,8 @@ pub fn set_stage_random_settings(stage_description: &mut StageDescription, seed:
     if !is_invalid_melee_mode() {
         let stage_id = stage_description.stage_id();
 
-        for (stage, setting) in &CONFIG.stage_additional_settings {
-            if *stage == stage_id && *setting != 0 {
+        if let Some(setting) = CONFIG.stage_additional_settings.get(&stage_id) {
+            if *setting != 0 {
                 let mut spirits_battle_data = SpiritsBattleData::default();
 
                 spirits_battle_data.stage_id = stage_id;
@@ -17,8 +17,6 @@ pub fn set_stage_random_settings(stage_description: &mut StageDescription, seed:
                 unsafe {
                     set_stage_additional_settings(&spirits_battle_data, stage_description);
                 }
-
-                break;
             }
         }
     }

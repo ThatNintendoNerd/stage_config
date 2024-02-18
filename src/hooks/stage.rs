@@ -12,10 +12,8 @@ pub fn stage_base_pre_setup(stage_base: &StageBase) {
 
 #[skyline::hook(offset = OFFSETS.is_flat_stage)]
 pub fn is_flat_stage(stage_id: StageID) -> bool {
-    for (stage, value) in &CONFIG.is_flat_stage {
-        if *stage == stage_id {
-            return *value;
-        }
+    if let Some(value) = CONFIG.is_flat_stage.get(&stage_id) {
+        return *value;
     }
 
     original!()(stage_id)
