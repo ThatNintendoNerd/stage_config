@@ -35,7 +35,7 @@ pub fn try_set_gravity_param(stage_id: StageID) {
 }
 
 /// Updates the parameters for gravity.
-pub fn set_gravity_param(param: &GravityParam) {
+fn set_gravity_param(param: &GravityParam) {
     use smash::app;
 
     if let Some(instance) = app::BattleObjectWorld::instance_mut() {

@@ -16,7 +16,7 @@ pub fn try_register_all_dynamic_collisions(stage_base: &StageBase) {
 }
 
 /// Registers all the dynamic collisions with the given set of model names.
-pub fn register_all_dynamic_collisions(stage_base: &StageBase, model_names: &HashSet<Hash40>) {
+fn register_all_dynamic_collisions(stage_base: &StageBase, model_names: &HashSet<Hash40>) {
     for model_name in model_names.iter().copied() {
         unsafe {
             for dynamic_object in (*(*stage_base.level_data).dynamic_object_collection).iter() {
@@ -27,7 +27,7 @@ pub fn register_all_dynamic_collisions(stage_base: &StageBase, model_names: &Has
 }
 
 /// Registers a dynamic collision if the object is associated with the given model name and the model exists.
-pub fn try_register_dynamic_collision(
+fn try_register_dynamic_collision(
     stage_base: &StageBase,
     dynamic_object: &StageDynamicObject,
     model_name: Hash40,
