@@ -34,8 +34,10 @@ impl Offsets {
         &INSTANCE
     }
 
-    fn find(haystack: &[u8], search_code: &[u8]) -> Option<usize> {
-        find_subsequence(haystack, search_code)
+    fn find(haystack: &[u8], needle: &[u8]) -> Option<usize> {
+        use memchr::memmem;
+
+        memmem::find(haystack, needle)
     }
 }
 
@@ -50,12 +52,6 @@ fn text() -> &'static [u8] {
 
         slice::from_raw_parts(ptr, len)
     }
-}
-
-fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
-    haystack
-        .windows(needle.len())
-        .position(|window| window == needle)
 }
 
 #[rustfmt::skip]
