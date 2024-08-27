@@ -3,30 +3,31 @@ use smash_stage::app::StageID;
 
 use crate::config::Config;
 
-/// Parameters for gravity.
+/// The parameters for gravity.
 #[derive(Deserialize)]
 pub struct GravityParam {
-    /// Boolean flag determining if the stage assumes a flat gravitational plane.
+    /// Determines if the stage should assume a flat gravitational plane.
     #[serde(default)]
     is_gravity_normal: bool,
 
-    /// Center position of gravity.
+    /// The position of the gravitational force.
     #[serde(default)]
-    pos: Option<GravityCenter>,
+    pos: Option<GravityPos>,
 }
 
-/// Center position of gravity.
+/// The position of the gravitational force.
 #[derive(Deserialize)]
-struct GravityCenter {
-    /// Position along the x-axis.
+struct GravityPos {
+    /// The position along the x-axis.
     #[serde(default)]
     x: f32,
 
-    /// Position along the y-axis.
+    /// The position along the y-axis.
     #[serde(default)]
     y: f32,
 }
 
+/// Updates the parameters for gravity if the given stage identifier is assigned specialized gravity parameters.
 pub fn set_gravity_param(stage_id: StageID) {
     use smash::app;
 
