@@ -7,7 +7,7 @@ pub fn stage_base_pre_setup(stage_base: &StageBase) {
     original!()(stage_base);
 
     hooks::ground::register_dynamic_collisions(stage_base);
-    hooks::gravity::set_gravity_param(stage_base.stage_id());
+    hooks::gravity::try_set_gravity_param(stage_base.stage_id());
 }
 
 #[skyline::hook(offset = Offsets::get().is_flat_stage)]
