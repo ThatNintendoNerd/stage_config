@@ -1,5 +1,6 @@
 use once_cell::sync::Lazy;
 
+/// The container for cached offsets to code and data.
 pub struct Offsets {
     pub stage_base_pre_setup: usize,
     pub is_flat_stage: usize,
@@ -9,6 +10,7 @@ pub struct Offsets {
 }
 
 impl Offsets {
+    /// Constructs a new instance of `Offsets`.
     fn new() -> Self {
         let text = text();
 
@@ -28,12 +30,14 @@ impl Offsets {
         }
     }
 
+    /// Returns a reference to a `Lazy` containing the current instance of `Offsets`.
     pub fn get() -> &'static Lazy<Self> {
         static INSTANCE: Lazy<Offsets> = Lazy::new(Offsets::new);
 
         &INSTANCE
     }
 
+    /// Returns the offset to the needle in the haystack, or `None` if it was not found.
     fn find(haystack: &[u8], needle: &[u8]) -> Option<usize> {
         use memchr::memmem;
 
@@ -41,6 +45,7 @@ impl Offsets {
     }
 }
 
+/// Returns a byte slice representing the code segment of the target application.
 fn text() -> &'static [u8] {
     use std::slice;
 
