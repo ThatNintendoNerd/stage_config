@@ -1,11 +1,11 @@
-use smash_stage::app::{SpiritsBattleData, StageDescription};
+use smash_stage::app::{GlobalStageParameter, SpiritsBattleData};
 
 use crate::{config::CONFIG, offsets::OFFSETS};
 
 #[skyline::hook(offset = OFFSETS.set_stage_random_settings)]
-pub fn set_stage_random_settings(stage_description: &mut StageDescription, seed: u32) {
+pub fn set_stage_random_settings(stage_parameter: &mut GlobalStageParameter, seed: u32) {
     if !is_invalid_melee_mode() {
-        let stage_id = stage_description.stage_id();
+        let stage_id = stage_parameter.stage_id();
 
         if let Some(setting) = CONFIG.stage_additional_settings.get(&stage_id) {
             if *setting != 0 {
@@ -15,20 +15,20 @@ pub fn set_stage_random_settings(stage_description: &mut StageDescription, seed:
                 spirits_battle_data.stage_additional_setting = *setting;
 
                 unsafe {
-                    set_stage_additional_settings(&spirits_battle_data, stage_description);
+                    set_stage_additional_settings(&spirits_battle_data, stage_parameter);
                 }
             }
         }
     }
 
-    original!()(stage_description, seed);
+    original!()(stage_parameter, seed);
 }
 
 fn is_invalid_melee_mode() -> bool {
     use smash_stage::app::{GlobalParameter, MeleeMode};
 
     matches!(
-        GlobalParameter::instance().melee_mode,
+        GlobalParameter::global_melee_parameter().melee_mode(),
         MeleeMode::Standard
             | MeleeMode::StandardMulti
             | MeleeMode::SpiritsBattle
@@ -39,5 +39,5 @@ fn is_invalid_melee_mode() -> bool {
 #[skyline::from_offset(OFFSETS.set_stage_additional_settings)]
 fn set_stage_additional_settings(
     spirits_battle_data: &SpiritsBattleData,
-    stage_description: &mut StageDescription,
+    stage_parameter: &mut GlobalStageParameter,
 );
