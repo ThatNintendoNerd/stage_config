@@ -9,56 +9,7 @@ use walkdir::WalkDir;
 
 use crate::hooks::gravity::GravityParam;
 
-pub static CONFIG: Lazy<Config> = Lazy::new(|| {
-    let mut config = Config::new();
-
-    for entry in WalkDir::new("sd:/ultimate/mods/")
-        .min_depth(1)
-        .max_depth(1)
-        .into_iter()
-        .filter_map(|e| e.ok())
-    {
-        let mut entry_path = entry.into_path();
-
-        if !arcropolis_api::is_mod_enabled(arcropolis_api::hash40(
-            entry_path.to_str().unwrap_or_default(),
-        )) {
-            continue;
-        }
-
-        entry_path.push("config_stage.toml");
-
-        if !entry_path.is_file() {
-            continue;
-        }
-
-        match fs::read_to_string(&entry_path) {
-            Ok(string) => match toml::from_str(&string) {
-                Ok(cfg) => config.merge(cfg),
-                Err(error) => {
-                    eprintln!(
-                        "[{}] Failed to parse TOML file data from '{}': {}",
-                        module_path!(),
-                        entry_path.display(),
-                        error,
-                    );
-                }
-            },
-            Err(error) => {
-                eprintln!(
-                    "[{}] Failed to read TOML file data from '{}': {}",
-                    module_path!(),
-                    entry_path.display(),
-                    error,
-                );
-            }
-        }
-    }
-
-    config
-});
-
-#[derive(Deserialize)]
+#[derive(Default, Deserialize)]
 pub struct Config {
     #[serde(default)]
     pub new_dynamic_collisions: HashMap<StageID, HashSet<Hash40>>,
@@ -78,13 +29,58 @@ pub struct Config {
 
 impl Config {
     fn new() -> Self {
-        Self {
-            new_dynamic_collisions: HashMap::new(),
-            is_flat_stage: HashMap::new(),
-            gravity_param: HashMap::new(),
-            stage_additional_settings: HashMap::new(),
-            discard_stage_code: Vec::new(),
+        let mut config = Config::default();
+
+        for entry in WalkDir::new("sd:/ultimate/mods/")
+            .min_depth(1)
+            .max_depth(1)
+            .into_iter()
+            .filter_map(|e| e.ok())
+        {
+            let mut entry_path = entry.into_path();
+
+            if !arcropolis_api::is_mod_enabled(arcropolis_api::hash40(
+                entry_path.to_str().unwrap_or_default(),
+            )) {
+                continue;
+            }
+
+            entry_path.push("config_stage.toml");
+
+            if !entry_path.is_file() {
+                continue;
+            }
+
+            match fs::read_to_string(&entry_path) {
+                Ok(string) => match toml::from_str(&string) {
+                    Ok(cfg) => config.merge(cfg),
+                    Err(error) => {
+                        eprintln!(
+                            "[{}] Failed to parse TOML file data from '{}': {}",
+                            module_path!(),
+                            entry_path.display(),
+                            error,
+                        );
+                    }
+                },
+                Err(error) => {
+                    eprintln!(
+                        "[{}] Failed to read TOML file data from '{}': {}",
+                        module_path!(),
+                        entry_path.display(),
+                        error,
+                    );
+                }
+            }
         }
+
+        config
+    }
+
+    pub fn get() -> &'static Lazy<Self> {
+        static INSTANCE: Lazy<Config> = Lazy::new(Config::new);
+
+        &INSTANCE
     }
 
     fn merge(&mut self, other: Self) {

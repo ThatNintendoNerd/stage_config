@@ -1,9 +1,12 @@
 use smash_stage::app::StageBase;
 
-use crate::config::CONFIG;
+use crate::config::Config;
 
 pub fn register_dynamic_collisions(stage_base: &StageBase) {
-    let Some(models) = CONFIG.new_dynamic_collisions.get(&stage_base.stage_id()) else {
+    let Some(models) = Config::get()
+        .new_dynamic_collisions
+        .get(&stage_base.stage_id())
+    else {
         return;
     };
 

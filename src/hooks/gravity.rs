@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use smash_stage::app::StageID;
 
-use crate::config::CONFIG;
+use crate::config::Config;
 
 /// Parameters for gravity.
 #[derive(Deserialize)]
@@ -30,7 +30,7 @@ struct GravityCenter {
 pub fn set_gravity_param(stage_id: StageID) {
     use smash::app;
 
-    let Some(param) = CONFIG.gravity_param.get(&stage_id) else {
+    let Some(param) = Config::get().gravity_param.get(&stage_id) else {
         return;
     };
     let Some(instance) = app::BattleObjectWorld::instance_mut() else {
