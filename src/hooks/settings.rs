@@ -1,8 +1,8 @@
 use smash_stage::app::{GlobalStageParameter, SpiritsBattleData};
 
-use crate::{config::CONFIG, offsets::OFFSETS};
+use crate::{config::CONFIG, offsets::Offsets};
 
-#[skyline::hook(offset = OFFSETS.set_stage_random_settings)]
+#[skyline::hook(offset = Offsets::get().set_stage_random_settings)]
 pub fn set_stage_random_settings(stage_parameter: &mut GlobalStageParameter, seed: u32) {
     if !is_invalid_melee_mode() {
         let stage_id = stage_parameter.stage_id();
@@ -36,7 +36,7 @@ fn is_invalid_melee_mode() -> bool {
     )
 }
 
-#[skyline::from_offset(OFFSETS.set_stage_additional_settings)]
+#[skyline::from_offset(Offsets::get().set_stage_additional_settings)]
 fn set_stage_additional_settings(
     spirits_battle_data: &SpiritsBattleData,
     stage_parameter: &mut GlobalStageParameter,
