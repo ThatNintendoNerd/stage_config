@@ -9,25 +9,32 @@ use walkdir::WalkDir;
 
 use crate::hooks::gravity::GravityParam;
 
+/// The container for deserializable plugin settings.
 #[derive(Default, Deserialize)]
 pub struct Config {
+    /// The collection of stage identifiers assigned a set of model names to associate with dynamic collisions.
     #[serde(default)]
     pub new_dynamic_collisions: HashMap<StageID, HashSet<Hash40>>,
 
+    /// The collection of stage identifiers assigned a Boolean flag determining if it should flatten battle objects.
     #[serde(default)]
     pub is_flat_stage: HashMap<StageID, bool>,
 
+    /// The collection of stage identifiers assigned specialized gravity parameters.
     #[serde(default)]
     pub gravity_param: HashMap<StageID, GravityParam>,
 
+    /// The collection of stage identifiers assigned a behavior-altering numeric setting from spirit battles.
     #[serde(default)]
     pub stage_additional_settings: HashMap<StageID, i8>,
 
+    /// The collection of stage identifiers which should discard all specialized programming.
     #[serde(default)]
     pub discard_stage_code: Vec<StageID>,
 }
 
 impl Config {
+    /// Constructs a new instance of `Config`.
     fn new() -> Self {
         let mut config = Config::default();
 
@@ -77,12 +84,14 @@ impl Config {
         config
     }
 
+    /// Returns a reference to a `Lazy` containing the current instance of `Config`.
     pub fn get() -> &'static Lazy<Self> {
         static INSTANCE: Lazy<Config> = Lazy::new(Config::new);
 
         &INSTANCE
     }
 
+    /// Merges the contents of `self` with the contents of `other`.
     fn merge(&mut self, other: Self) {
         let Self {
             new_dynamic_collisions,
