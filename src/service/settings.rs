@@ -9,17 +9,24 @@ pub fn try_set_stage_additional_settings(stage_parameter: &mut GlobalStageParame
 
     let stage_id = stage_parameter.stage_id();
 
-    if let Some(setting) = Config::get().stage_additional_settings.get(&stage_id) {
-        if *setting != 0 {
-            let mut spirits_battle_data = SpiritsBattleData::default();
+    if let Some(setting) = Config::get()
+        .stage_additional_settings
+        .get(&stage_id)
+        .copied()
+        .filter(|s| *s != 0)
+    {
+        set_stage_additional_settings(stage_parameter, setting);
+    }
+}
 
-            spirits_battle_data.stage_id = stage_id;
-            spirits_battle_data.stage_additional_setting = *setting;
+fn set_stage_additional_settings(stage_parameter: &mut GlobalStageParameter, setting: i8) {
+    let mut spirits_battle_data = SpiritsBattleData::default();
 
-            unsafe {
-                set_stage_additional_settings(&spirits_battle_data, stage_parameter);
-            }
-        }
+    spirits_battle_data.stage_id = stage_parameter.stage_id();
+    spirits_battle_data.stage_additional_setting = setting;
+
+    unsafe {
+        set_stage_additional_settings_impl(&spirits_battle_data, stage_parameter);
     }
 }
 
@@ -36,7 +43,7 @@ fn is_invalid_melee_mode() -> bool {
 }
 
 #[skyline::from_offset(Offsets::get().set_stage_additional_settings)]
-fn set_stage_additional_settings(
+fn set_stage_additional_settings_impl(
     spirits_battle_data: &SpiritsBattleData,
     stage_parameter: &mut GlobalStageParameter,
 );
