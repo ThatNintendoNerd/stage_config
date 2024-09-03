@@ -1,17 +1,13 @@
 use smash_stage::app::{GlobalStageParameter, StageBase, StageID};
 
-use crate::{config::Config, offsets::Offsets};
-
-pub(crate) mod gravity;
-mod ground;
-mod settings;
+use crate::{config::Config, offsets::Offsets, service};
 
 #[skyline::hook(offset = Offsets::get().stage_base_pre_setup)]
 fn stage_base_pre_setup(stage_base: &StageBase) {
     original!()(stage_base);
 
-    ground::try_register_all_dynamic_collisions(stage_base);
-    gravity::try_set_gravity_param(stage_base.stage_id());
+    service::try_register_all_dynamic_collisions(stage_base);
+    service::try_set_gravity_param(stage_base.stage_id());
 }
 
 #[skyline::hook(offset = Offsets::get().is_flat_stage)]
@@ -25,7 +21,7 @@ fn is_flat_stage(stage_id: StageID) -> bool {
 
 #[skyline::hook(offset = Offsets::get().set_stage_random_settings)]
 fn set_stage_random_settings(stage_parameter: &mut GlobalStageParameter, seed: u32) {
-    settings::try_set_stage_additional_settings(stage_parameter);
+    service::try_set_stage_additional_settings(stage_parameter);
 
     original!()(stage_parameter, seed);
 }

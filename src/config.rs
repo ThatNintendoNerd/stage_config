@@ -7,7 +7,7 @@ use serde::Deserialize;
 use smash_stage::app::StageID;
 use walkdir::WalkDir;
 
-use crate::hooks::gravity::GravityParam;
+use crate::service::GravityParam;
 
 /// The container for deserializable plugin settings.
 #[derive(Default, Deserialize)]
