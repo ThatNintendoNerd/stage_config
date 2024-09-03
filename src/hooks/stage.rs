@@ -19,25 +19,25 @@ pub fn is_flat_stage(stage_id: StageID) -> bool {
     original!()(stage_id)
 }
 
-pub fn patch_create_stage_jump_table() {
+pub fn patch_create_stage_branch_table() {
     use skyline::{
         hooks::{getRegionAddress, Region},
         patching::Patch,
     };
     use strum::EnumCount;
 
-    let jump_table_offset = Offsets::get().create_stage_jump_table;
-    let jump_table = unsafe {
-        &*((getRegionAddress(Region::Text) as usize + jump_table_offset)
+    let branch_table_offset = Offsets::get().create_stage_branch_table;
+    let branch_table = unsafe {
+        &*((getRegionAddress(Region::Text) as usize + branch_table_offset)
             as *const [i32; StageID::COUNT])
     };
 
     // The Omega form of Peach's Castle is the first stage ID to use the default case.
-    let jump_offset = jump_table[StageID::End_Mario_Castle64 as usize];
+    let branch_offset = branch_table[StageID::End_Mario_Castle64 as usize];
 
     for stage in &Config::get().discard_stage_code {
-        Patch::in_text(jump_table_offset + (*stage as usize) * std::mem::size_of::<StageID>())
-            .data(jump_offset)
+        Patch::in_text(branch_table_offset + (*stage as usize) * std::mem::size_of::<StageID>())
+            .data(branch_offset)
             .unwrap();
     }
 }

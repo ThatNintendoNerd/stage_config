@@ -6,7 +6,7 @@ pub struct Offsets {
     pub is_flat_stage: usize,
     pub set_stage_random_settings: usize,
     pub set_stage_additional_settings: usize,
-    pub create_stage_jump_table: usize,
+    pub create_stage_branch_table: usize,
 }
 
 impl Offsets {
@@ -25,7 +25,7 @@ impl Offsets {
                 SET_STAGE_ADDITIONAL_SETTINGS_SEARCH_CODE,
             )
             .unwrap_or(0x2498660),
-            create_stage_jump_table: Self::find(text, CREATE_STAGE_JUMP_TABLE_SEARCH_CODE)
+            create_stage_branch_table: Self::find(text, CREATE_STAGE_BRANCH_TABLE_SEARCH_CODE)
                 .unwrap_or(0x4505DF0),
         }
     }
@@ -100,6 +100,6 @@ static SET_STAGE_ADDITIONAL_SETTINGS_SEARCH_CODE: &[u8] = &[
 ];
 
 #[rustfmt::skip]
-static CREATE_STAGE_JUMP_TABLE_SEARCH_CODE: &[u8] = &[
+static CREATE_STAGE_BRANCH_TABLE_SEARCH_CODE: &[u8] = &[
     0xB8, 0x7B, 0x13, 0xFE,
 ];

@@ -11,5 +11,5 @@ pub fn install() {
         settings::set_stage_random_settings,
     );
 
-    stage::patch_create_stage_jump_table();
+    stage::patch_create_stage_branch_table();
 }
