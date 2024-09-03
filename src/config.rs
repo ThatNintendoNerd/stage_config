@@ -7,7 +7,7 @@ use serde::Deserialize;
 use smash_stage::app::StageID;
 use walkdir::WalkDir;
 
-use crate::service::GravityParam;
+use crate::service::{GimmickParam, GravityParam};
 
 /// The container for deserializable plugin settings.
 #[derive(Default, Deserialize)]
@@ -31,6 +31,10 @@ pub struct Config {
     /// The collection of stage identifiers which should discard all specialized programming.
     #[serde(default)]
     pub discard_stage_code: Vec<StageID>,
+
+    /// The collection of stage identifiers assigned specialized stage hazards parameters.
+    #[serde(default)]
+    pub gimmick_param: HashMap<StageID, GimmickParam>,
 }
 
 impl Config {
@@ -99,6 +103,7 @@ impl Config {
             gravity_param,
             stage_additional_settings,
             discard_stage_code,
+            gimmick_param,
         } = other;
 
         self.new_dynamic_collisions.extend(new_dynamic_collisions);
@@ -107,5 +112,6 @@ impl Config {
         self.stage_additional_settings
             .extend(stage_additional_settings);
         self.discard_stage_code.extend(discard_stage_code);
+        self.gimmick_param.extend(gimmick_param);
     }
 }
