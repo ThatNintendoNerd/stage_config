@@ -25,7 +25,7 @@ struct GravityPos {
     y: f32,
 }
 
-/// Updates the parameters for gravity if the given stage identifier is assigned specialized gravity parameters.
+/// Updates the parameters for gravity if the given stage identifier is assigned specialized parameters.
 pub fn try_set_gravity_param(stage_id: StageID) {
     use crate::config::Config;
 

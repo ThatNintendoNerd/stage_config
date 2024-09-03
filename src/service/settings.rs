@@ -2,6 +2,7 @@ use smash_stage::app::{GlobalStageParameter, SpiritsBattleData};
 
 use crate::{config::Config, offsets::Offsets};
 
+/// Updates the stage's spirit battle settings if the given stage identifier is assigned a specialized setting.
 pub fn try_set_stage_additional_settings(stage_parameter: &mut GlobalStageParameter) {
     if is_invalid_melee_mode() {
         return;
@@ -19,6 +20,7 @@ pub fn try_set_stage_additional_settings(stage_parameter: &mut GlobalStageParame
     }
 }
 
+/// Updates the stage's spirit battle settings.
 fn set_stage_additional_settings(stage_parameter: &mut GlobalStageParameter, setting: i8) {
     let mut spirits_battle_data = SpiritsBattleData::default();
 
@@ -30,6 +32,7 @@ fn set_stage_additional_settings(stage_parameter: &mut GlobalStageParameter, set
     }
 }
 
+/// Returns `true` if the working game mode is unsupported by this feature.
 fn is_invalid_melee_mode() -> bool {
     use smash_stage::app::{GlobalParameter, MeleeMode};
 
