@@ -13,6 +13,7 @@ Through the use of a configuration file, a stage mod can take advantage of the f
 - Custom center of gravity or the removal thereof
 - Use of `stage_additional_setting` values from spirit battles outside of Spirits
 - Discard specialized stage programming
+- Guarantee behavior resulting from a particular stage hazards setting
 
 For more information about these features, please read the [wiki](https://github.com/ThatNintendoNerd/stage_config/wiki).
 
