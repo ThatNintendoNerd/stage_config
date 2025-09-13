@@ -1,4 +1,4 @@
-use smash_stage::app::{GlobalStageParameter, StageBase, StageID};
+use libc2::app::{GlobalStageParameter, StageBase, StageID};
 
 use crate::{config::Config, offsets::Offsets, service};
 

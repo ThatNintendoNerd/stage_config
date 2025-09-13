@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use hash40::Hash40;
-use smash_stage::app::{StageBase, StageDynamicObject};
+use libc2::app::{StageBase, StageDynamicObject};
 
 /// Registers all the dynamic collisions if a set of model names is associated with the current stage identifier.
 pub fn try_register_all_dynamic_collisions(stage_base: &StageBase) {

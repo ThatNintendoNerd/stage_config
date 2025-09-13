@@ -1,5 +1,5 @@
+use libc2::app::StageID;
 use serde::Deserialize;
-use smash_stage::app::StageID;
 
 /// The parameters for gravity.
 #[derive(Deserialize)]
@@ -48,8 +48,8 @@ fn set_gravity_param(param: &GravityParam) {
         }
 
         if let Some(pos) = &param.pos {
-            instance.gravity_pos.x = pos.x;
-            instance.gravity_pos.y = pos.y;
+            instance.gravity_pos.vec[0] = pos.x;
+            instance.gravity_pos.vec[1] = pos.y;
         }
     }
 }

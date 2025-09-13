@@ -1,4 +1,4 @@
-use smash_stage::app::{GlobalStageParameter, SpiritsBattleData};
+use libc2::app::{GlobalStageParameter, SpiritsBattleData};
 
 use crate::{config::Config, offsets::Offsets};
 
@@ -34,7 +34,7 @@ fn set_stage_additional_settings(stage_parameter: &mut GlobalStageParameter, set
 
 /// Returns `true` if the working game mode is unsupported by this feature.
 fn is_invalid_melee_mode() -> bool {
-    use smash_stage::app::{GlobalParameter, MeleeMode};
+    use libc2::app::{GlobalParameter, MeleeMode};
 
     matches!(
         GlobalParameter::global_melee_parameter().melee_mode(),

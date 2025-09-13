@@ -2,9 +2,9 @@ use std::collections::{HashMap, HashSet};
 use std::fs;
 
 use hash40::Hash40;
+use libc2::app::StageID;
 use once_cell::sync::Lazy;
 use serde::Deserialize;
-use smash_stage::app::StageID;
 use walkdir::WalkDir;
 
 use crate::service::{GimmickParam, GravityParam};

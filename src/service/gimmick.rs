@@ -1,5 +1,5 @@
+use libc2::app::GlobalStageParameter;
 use serde::Deserialize;
-use smash_stage::app::GlobalStageParameter;
 
 use crate::config::Config;
 
