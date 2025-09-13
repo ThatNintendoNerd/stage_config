@@ -16,15 +16,3 @@ Using a configuration file, a stage mod can take advantage of the following feat
 - Guarantee behavior resulting from a particular stage hazards setting
 
 For more information about these features, please read the [wiki](https://github.com/ThatNintendoNerd/stage_config/wiki).
-
-## Building
-
-NOTE: This project cannot be compiled without the libc2 library. Said library is unreleased due to its incomplete state, but its release is planned.
-
-With an up-to-date version of the Rust toolchain installed and [cargo-skyline](https://github.com/jam1garner/cargo-skyline) 3.0.0 or newer, run the following command to compile the project in release mode:
-
-```
-cargo skyline build --release
-```
-
-The resulting build is found at `./target/aarch64-skyline-switch/release/libstage_config.nro`
