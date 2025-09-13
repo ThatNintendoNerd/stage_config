@@ -1,9 +1,11 @@
-use std::collections::{HashMap, HashSet};
-use std::fs;
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+    sync::LazyLock,
+};
 
 use hash40::Hash40;
 use libc2::app::StageID;
-use once_cell::sync::Lazy;
 use serde::Deserialize;
 use walkdir::WalkDir;
 
@@ -88,9 +90,9 @@ impl Config {
         config
     }
 
-    /// Returns a reference to a `Lazy` containing the current instance of `Config`.
-    pub fn get() -> &'static Lazy<Self> {
-        static INSTANCE: Lazy<Config> = Lazy::new(Config::new);
+    /// Returns a reference to a `LazyLock` containing the current instance of `Config`.
+    pub const fn get() -> &'static LazyLock<Self> {
+        static INSTANCE: LazyLock<Config> = LazyLock::new(Config::new);
 
         &INSTANCE
     }
