@@ -3,7 +3,7 @@ mod env;
 mod hooks;
 mod mem;
 mod offsets;
-mod service;
+mod stage;
 
 #[skyline::main(name = "stage_config")]
 fn main() {
