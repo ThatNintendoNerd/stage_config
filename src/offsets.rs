@@ -6,8 +6,8 @@ use crate::env;
 pub struct Offsets {
     pub stage_base_pre_setup: usize,
     pub is_flat_stage: usize,
-    pub set_stage_random_settings: usize,
-    pub set_stage_additional_settings: usize,
+    pub set_stage_random_setting: usize,
+    pub set_stage_additional_setting: usize,
     pub create_stage_branch_table_adrp_instr: usize,
 }
 
@@ -19,8 +19,8 @@ impl Offsets {
         Self {
             stage_base_pre_setup: STAGE_BASE_PRE_SETUP_NEEDLE.find(text).unwrap(),
             is_flat_stage: IS_FLAT_STAGE_NEEDLE.find(text).unwrap(),
-            set_stage_random_settings: SET_STAGE_RANDOM_SETTINGS_NEEDLE.find(text).unwrap(),
-            set_stage_additional_settings: SET_STAGE_ADDITIONAL_SETTINGS_NEEDLE.find(text).unwrap(),
+            set_stage_random_setting: SET_STAGE_RANDOM_SETTING_NEEDLE.find(text).unwrap(),
+            set_stage_additional_setting: SET_STAGE_ADDITIONAL_SETTING_NEEDLE.find(text).unwrap(),
             create_stage_branch_table_adrp_instr: CREATE_STAGE_BRANCH_TABLE_ADRP_INSTR_NEEDLE
                 .find(text)
                 .unwrap(),
@@ -104,7 +104,7 @@ static IS_FLAT_STAGE_NEEDLE: Needle = Needle {
     offset: 0x0,
 };
 
-static SET_STAGE_RANDOM_SETTINGS_NEEDLE: Needle = Needle {
+static SET_STAGE_RANDOM_SETTING_NEEDLE: Needle = Needle {
     bytes: &[
         0x08, 0x00, 0x40, 0xB9, // ldr w8, [x0]
         0x09, 0xF1, 0x02, 0x51, // sub w9, w8, #0xbc
@@ -113,7 +113,7 @@ static SET_STAGE_RANDOM_SETTINGS_NEEDLE: Needle = Needle {
     offset: -0x20,
 };
 
-static SET_STAGE_ADDITIONAL_SETTINGS_NEEDLE: Needle = Needle {
+static SET_STAGE_ADDITIONAL_SETTING_NEEDLE: Needle = Needle {
     bytes: &[
         0x08, 0x2D, 0x0A, 0x9B, // madd x8, x8, x10, x11
         0x08, 0x05, 0x40, 0xB9, // ldr w8, [x8, #0x4]
