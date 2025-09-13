@@ -1,29 +1,6 @@
 use libc2::app::StageID;
-use serde::Deserialize;
 
-/// The parameters for gravity.
-#[derive(Deserialize)]
-pub struct GravityParam {
-    /// Determines if the stage should assume a flat gravitational plane.
-    #[serde(default)]
-    is_gravity_normal: bool,
-
-    /// The position of the gravitational force.
-    #[serde(default)]
-    pos: Option<GravityPos>,
-}
-
-/// The position of the gravitational force.
-#[derive(Deserialize)]
-struct GravityPos {
-    /// The position along the x-axis.
-    #[serde(default)]
-    x: f32,
-
-    /// The position along the y-axis.
-    #[serde(default)]
-    y: f32,
-}
+use crate::config::ConfigGravityParameter;
 
 /// Updates the parameters for gravity if the given stage identifier is assigned specialized parameters.
 pub fn try_set_gravity_param(stage_id: StageID) {
@@ -35,7 +12,7 @@ pub fn try_set_gravity_param(stage_id: StageID) {
 }
 
 /// Updates the parameters for gravity.
-fn set_gravity_param(param: &GravityParam) {
+fn set_gravity_param(param: &ConfigGravityParameter) {
     use smash::app;
 
     if let Some(instance) = app::BattleObjectWorld::instance_mut() {

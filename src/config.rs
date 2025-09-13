@@ -9,8 +9,6 @@ use libc2::app::StageID;
 use serde::Deserialize;
 use walkdir::WalkDir;
 
-use crate::service::{GimmickParam, GravityParam};
-
 /// The container for deserializable plugin settings.
 #[derive(Default, Deserialize)]
 pub struct Config {
@@ -24,7 +22,7 @@ pub struct Config {
 
     /// The collection of stage identifiers assigned specialized gravity parameters.
     #[serde(default)]
-    pub gravity_param: HashMap<StageID, GravityParam>,
+    pub gravity_param: HashMap<StageID, ConfigGravityParameter>,
 
     /// The collection of stage identifiers assigned a behavior-altering numeric setting from spirit battles.
     #[serde(default)]
@@ -36,7 +34,7 @@ pub struct Config {
 
     /// The collection of stage identifiers assigned specialized stage hazards parameters.
     #[serde(default)]
-    pub gimmick_param: HashMap<StageID, GimmickParam>,
+    pub gimmick_param: HashMap<StageID, ConfigGimmickParameter>,
 }
 
 impl Config {
@@ -116,4 +114,36 @@ impl Config {
         self.discard_stage_code.extend(discard_stage_code);
         self.gimmick_param.extend(gimmick_param);
     }
+}
+
+/// The parameters for gravity.
+#[derive(Deserialize)]
+pub struct ConfigGravityParameter {
+    /// Determines if the stage should assume a flat gravitational plane.
+    #[serde(default)]
+    pub is_gravity_normal: bool,
+
+    /// The position of the gravitational force.
+    #[serde(default)]
+    pub pos: Option<ConfigGravityPosition>,
+}
+
+/// The position of the gravitational force.
+#[derive(Deserialize)]
+pub struct ConfigGravityPosition {
+    /// The position along the x-axis.
+    #[serde(default)]
+    pub x: f32,
+
+    /// The position along the y-axis.
+    #[serde(default)]
+    pub y: f32,
+}
+
+/// The parameters for stage hazards.
+#[derive(Deserialize)]
+pub struct ConfigGimmickParameter {
+    /// Determines if stage hazards should be enabled.
+    #[serde(default)]
+    pub is_gimmick: bool,
 }
