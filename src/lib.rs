@@ -1,4 +1,5 @@
 mod config;
+mod env;
 mod hooks;
 mod mem;
 mod offsets;

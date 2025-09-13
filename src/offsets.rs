@@ -1,25 +1,29 @@
 use once_cell::sync::Lazy;
 
-/// The container for cached offsets to code and data.
+use crate::env;
+
+/// The container for cached offsets to code.
 pub struct Offsets {
     pub stage_base_pre_setup: usize,
     pub is_flat_stage: usize,
     pub set_stage_random_settings: usize,
     pub set_stage_additional_settings: usize,
-    pub create_stage_branch_table: usize,
+    pub create_stage_branch_table_adrp_instr: usize,
 }
 
 impl Offsets {
     /// Constructs a new instance of `Offsets`.
     fn new() -> Self {
-        let text = text();
+        let text = unsafe { env::text() };
 
         Self {
             stage_base_pre_setup: STAGE_BASE_PRE_SETUP_NEEDLE.find(text).unwrap(),
             is_flat_stage: IS_FLAT_STAGE_NEEDLE.find(text).unwrap(),
             set_stage_random_settings: SET_STAGE_RANDOM_SETTINGS_NEEDLE.find(text).unwrap(),
             set_stage_additional_settings: SET_STAGE_ADDITIONAL_SETTINGS_NEEDLE.find(text).unwrap(),
-            create_stage_branch_table: CREATE_STAGE_BRANCH_TABLE_NEEDLE.find(text).unwrap(),
+            create_stage_branch_table_adrp_instr: CREATE_STAGE_BRANCH_TABLE_ADRP_INSTR_NEEDLE
+                .find(text)
+                .unwrap(),
         }
     }
 
@@ -28,20 +32,6 @@ impl Offsets {
         static INSTANCE: Lazy<Offsets> = Lazy::new(Offsets::new);
 
         &INSTANCE
-    }
-}
-
-/// Returns a byte slice representing the code segment of the target application.
-fn text() -> &'static [u8] {
-    use std::slice;
-
-    use skyline::hooks::{getRegionAddress, Region};
-
-    unsafe {
-        let ptr = getRegionAddress(Region::Text) as *const u8;
-        let len = (getRegionAddress(Region::Data) as usize) - (ptr as usize);
-
-        slice::from_raw_parts(ptr, len)
     }
 }
 
@@ -132,9 +122,18 @@ static SET_STAGE_ADDITIONAL_SETTINGS_NEEDLE: Needle = Needle {
     offset: -0x20,
 };
 
-static CREATE_STAGE_BRANCH_TABLE_NEEDLE: Needle = Needle {
+static CREATE_STAGE_BRANCH_TABLE_ADRP_INSTR_NEEDLE: Needle = Needle {
     bytes: &[
-        0xB8, 0x7B, 0x13, 0xFE, // -32277576
+        0xFF, 0x43, 0x07, 0xD1, // sub sp, sp, #0x1d0
+        0xFC, 0x6F, 0x17, 0xA9, // stp x28, x27, [sp, #0x170]
+        0xFA, 0x67, 0x18, 0xA9, // stp x26, x25, [sp, #0x180]
+        0xF8, 0x5F, 0x19, 0xA9, // stp x24, x23, [sp, #0x190]
+        0xF6, 0x57, 0x1A, 0xA9, // stp x22, x21, [sp, #0x1a0]
+        0xF4, 0x4F, 0x1B, 0xA9, // stp x20, x19, [sp, #0x1b0]
+        0xFD, 0x7B, 0x1C, 0xA9, // stp x29, x30, [sp, #0x1c0]
+        0xFD, 0x03, 0x07, 0x91, // add x29, sp, #0x1c0
+        0xF3, 0x03, 0x00, 0xAA, // mov x19, x0
+        0x5F, 0x08, 0x00, 0x71, // cmp w2, #0x2
     ],
-    offset: 0x0,
+    offset: 0x98,
 };
