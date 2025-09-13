@@ -2,7 +2,7 @@ use libc2::app::GlobalStageParameter;
 
 use crate::config::Config;
 
-/// Updates the parameters for stage hazards if the given stage identifier is assigned specialized parameters.
+/// Updates the parameters for stage hazards if the working stage identifier is assigned specialized parameters.
 pub fn try_set_gimmick_param(stage_parameter: &mut GlobalStageParameter) {
     let stage_id = stage_parameter.stage_id();
 

@@ -12,7 +12,7 @@ pub struct Offsets {
 }
 
 impl Offsets {
-    /// Constructs a new instance of `Offsets`.
+    /// Creates a new `Offsets`.
     fn new() -> Self {
         let text = unsafe { env::text() };
 
@@ -27,7 +27,7 @@ impl Offsets {
         }
     }
 
-    /// Returns a reference to a `LazyLock` containing the current instance of `Offsets`.
+    /// Returns a reference to the lazily initialized `Offsets`.
     pub const fn get() -> &'static LazyLock<Self> {
         static INSTANCE: LazyLock<Offsets> = LazyLock::new(Offsets::new);
 

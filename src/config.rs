@@ -17,7 +17,7 @@ pub struct Config {
     #[serde(default)]
     pub new_dynamic_collisions: HashMap<StageID, HashSet<Hash40>>,
 
-    /// The collection of stage identifiers assigned a Boolean flag determining if it should flatten battle objects.
+    /// The collection of stage identifiers assigned a Boolean determining if it should flatten battle objects.
     #[serde(default)]
     pub is_flat_stage: HashMap<StageID, bool>,
 
@@ -29,7 +29,7 @@ pub struct Config {
     #[serde(default)]
     pub stage_additional_settings: HashMap<StageID, i8>,
 
-    /// The collection of stage identifiers which should discard all specialized programming.
+    /// The collection of stage identifiers to discard all specialized programming for.
     #[serde(default)]
     pub discard_stage_code: Vec<StageID>,
 
@@ -39,7 +39,7 @@ pub struct Config {
 }
 
 impl Config {
-    /// Constructs a new instance of `Config`.
+    /// Creates a new `Config`.
     fn new() -> Self {
         let mut config = Config::default();
 
@@ -49,27 +49,26 @@ impl Config {
             .into_iter()
             .filter_map(|e| e.ok())
         {
-            let mut entry_path = entry.into_path();
+            let mut path = entry.into_path();
+            let path_hash = arcropolis_api::hash40(path.to_str().unwrap());
 
-            if !arcropolis_api::is_mod_enabled(arcropolis_api::hash40(
-                entry_path.to_str().unwrap_or_default(),
-            )) {
+            if !arcropolis_api::is_mod_enabled(path_hash) {
                 continue;
             }
 
-            entry_path.push("config_stage.toml");
+            path.push("config_stage.toml");
 
-            if !entry_path.is_file() {
+            if !path.is_file() {
                 continue;
             }
 
-            config.read_mut(entry_path);
+            config.read_mut(path);
         }
 
         config
     }
 
-    /// Returns a reference to a `LazyLock` containing the current instance of `Config`.
+    /// Returns a reference to the lazily initialized `Config`.
     pub const fn get() -> &'static LazyLock<Self> {
         static INSTANCE: LazyLock<Config> = LazyLock::new(Config::new);
 
