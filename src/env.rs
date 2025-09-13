@@ -6,6 +6,14 @@ use skyline::{
     nn,
 };
 
+/// Returns `true` if the version of the target application is supported.
+pub fn is_app_version_compatible() -> bool {
+    let app_version = app_version();
+    let app_version_min = Version::new(3, 0, 0);
+
+    app_version >= app_version_min
+}
+
 /// Returns the version of the target application.
 pub fn app_version() -> Version {
     let mut display_version = nn::oe::DisplayVersion { name: [b'\0'; 16] };
