@@ -1,6 +1,7 @@
 use std::{
     collections::{HashMap, HashSet},
     fs,
+    path::Path,
     sync::LazyLock,
 };
 
@@ -62,27 +63,7 @@ impl Config {
                 continue;
             }
 
-            match fs::read_to_string(&entry_path) {
-                Ok(string) => match toml::from_str(&string) {
-                    Ok(cfg) => config.merge(cfg),
-                    Err(error) => {
-                        eprintln!(
-                            "[{}] Failed to parse TOML file data from '{}': {}",
-                            module_path!(),
-                            entry_path.display(),
-                            error,
-                        );
-                    }
-                },
-                Err(error) => {
-                    eprintln!(
-                        "[{}] Failed to read TOML file data from '{}': {}",
-                        module_path!(),
-                        entry_path.display(),
-                        error,
-                    );
-                }
-            }
+            config.read_mut(entry_path);
         }
 
         config
@@ -95,8 +76,31 @@ impl Config {
         &INSTANCE
     }
 
-    /// Merges the contents of `self` with the contents of `other`.
-    fn merge(&mut self, other: Self) {
+    /// Reads and deserializes a configuration file from disk, extending `self` with it.
+    fn read_mut<P: AsRef<Path>>(&mut self, path: P) {
+        match fs::read_to_string(&path) {
+            Ok(string) => match toml::from_str(&string) {
+                Ok(config) => self.extend(config),
+                Err(error) => {
+                    eprintln!(
+                        "[{}] Failed to deserialize configuration file from '{}': {error}",
+                        module_path!(),
+                        path.as_ref().display(),
+                    );
+                }
+            },
+            Err(error) => {
+                eprintln!(
+                    "[{}] Failed to read configuration file from '{}': {error}",
+                    module_path!(),
+                    path.as_ref().display(),
+                );
+            }
+        }
+    }
+
+    /// Extends `self` with the contents of `other`.
+    fn extend(&mut self, other: Self) {
         let Self {
             new_dynamic_collisions,
             is_flat_stage,
