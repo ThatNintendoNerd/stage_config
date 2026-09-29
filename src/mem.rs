@@ -1,15 +1,14 @@
 use libc2::app::StageID;
-use semver::Version;
 use skyline::{
     hooks::{Region, getRegionAddress},
     patching::Patch,
 };
 
-use crate::{config::Config, env, offsets::Offsets};
+use crate::{config::Config, offsets::Offsets};
 
 mod instr;
 use instr::*;
-
+/*
 /// Determines if a stage identifier exists on the given version of the target application.
 #[rustfmt::skip]
 fn is_valid_stage_id(stage_id: StageID, app_version: &Version) -> bool {
@@ -55,7 +54,7 @@ fn is_valid_stage_id(stage_id: StageID, app_version: &Version) -> bool {
 
     *app_version >= app_version_min
 }
-
+*/
 /// Computes the resulting offset from an `ADRP` and an `ADD` instruction, relative to the start of the code segment.
 fn calc_offset_from_adrp_add(text: *const u8, adrp_offset: usize, add_offset: usize) -> usize {
     let instr = unsafe { text.add(adrp_offset).cast::<u32>().read() };
@@ -81,9 +80,10 @@ fn patch_create_stage_branch_table() {
 
     // The Omega form of Peach's Castle is the first stage identifier to use the default case.
     let branch_offset = branch_table[StageID::End_Mario_Castle64 as usize];
-    let app_version = env::app_version();
+    // let app_version = env::app_version();
 
     for stage_id in Config::get().discard_stage_code.iter().copied() {
+        /*
         if !is_valid_stage_id(stage_id, &app_version) {
             eprintln!(
                 "[{}] `{stage_id}` was specified but is not supported on the installed version of the target software.",
@@ -91,7 +91,7 @@ fn patch_create_stage_branch_table() {
             );
             continue;
         }
-
+        */
         let offset = branch_table_offset + stage_id as usize * size_of::<StageID>();
 
         Patch::in_text(offset).data(branch_offset).unwrap();

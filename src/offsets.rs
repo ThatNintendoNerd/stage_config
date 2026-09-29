@@ -110,7 +110,7 @@ static SET_STAGE_RANDOM_SETTING_NEEDLE: Needle = Needle {
         0x09, 0xF1, 0x02, 0x51, // sub w9, w8, #0xbc
         0xF4, 0x03, 0x01, 0x2A, // mov w20, w1
     ],
-    offset: -0x20,
+    offset: -0x24,
 };
 
 static SET_STAGE_ADDITIONAL_SETTING_NEEDLE: Needle = Needle {

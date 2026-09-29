@@ -9,9 +9,9 @@ use skyline::{
 /// Returns `true` if the version of the target application is supported.
 pub fn is_app_version_compatible() -> bool {
     let app_version = app_version();
-    let app_version_min = Version::new(3, 0, 0);
+    let target_app_version = Version::new(13, 0, 5);
 
-    app_version >= app_version_min
+    app_version == target_app_version
 }
 
 /// Returns the version of the target application.
