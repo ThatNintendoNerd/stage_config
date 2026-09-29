@@ -5,8 +5,7 @@ use std::{
     sync::LazyLock,
 };
 
-use hash40::Hash40;
-use libc2::app::StageID;
+use libc2::{app::StageID, phx::Hash40};
 use serde::Deserialize;
 use walkdir::WalkDir;
 

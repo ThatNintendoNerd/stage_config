@@ -1,3 +1,5 @@
+use std::mem::MaybeUninit;
+
 use libc2::app::{GlobalStageParameter, SpiritsBattleData};
 
 use crate::{config::Config, offsets::Offsets};
@@ -11,19 +13,24 @@ pub fn set_stage_additional_setting(stage_parameter: &mut GlobalStageParameter) 
     let stage_id = stage_parameter.stage_id();
     let Some(setting) = Config::get()
         .stage_additional_settings
-        .get(&stage_id)
+        .get(stage_id)
         .copied()
         .filter(|s| *s != 0)
     else {
         return;
     };
-    let mut spirits_battle_data = SpiritsBattleData::default();
+    let mut spirits_battle_data = MaybeUninit::<SpiritsBattleData>::uninit();
 
-    spirits_battle_data.stage_id = stage_id;
-    spirits_battle_data.stage_additional_setting = setting;
+    // SAFETY: The foreign function only reads the fields assigned to.
+    unsafe {
+        spirits_battle_data.assume_init_mut().stage_id = *stage_id;
+        spirits_battle_data
+            .assume_init_mut()
+            .stage_additional_setting = setting;
+    }
 
     unsafe {
-        set_stage_additional_setting_impl(&spirits_battle_data, stage_parameter);
+        set_stage_additional_setting_impl(spirits_battle_data.assume_init_ref(), stage_parameter);
     }
 }
 

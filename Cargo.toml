@@ -2,7 +2,7 @@
 name = "stage_config"
 version = "1.1.0"
 authors = ["ThatNintendoNerd"]
-edition = "2021"
+edition = "2024"
 
 [package.metadata.skyline]
 titleid = "01006A800016E000"
@@ -12,15 +12,12 @@ crate-type = ["cdylib"]
 
 [dependencies]
 arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api.git" }
-hash40 = "1.3.1"
-libc2 = { path = "../libc2", features = ["serde"] }
-memchr = "2.7.5"
-semver = "1.0.26"
-serde = { version = "1.0.219", features = ["derive"] }
-skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
-smash = { git = "https://github.com/blu-dev/smash-rs.git" }
-strum = { version = "0.27.2", features = ["derive"] }
-toml = "0.9.5"
+libc2 = { git = "https://github.com/ultimate-research/libc2-rs.git", features = ["impl", "serde"] }
+memchr = "2.8.3"
+semver = "1.0.28"
+serde = { version = "1.0.229", features = ["derive"] }
+skyline = "0.6.0"
+toml = "1.1.6"
 walkdir = "2.5.0"
 
 [profile.dev]

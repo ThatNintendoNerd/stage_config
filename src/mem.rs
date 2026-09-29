@@ -1,10 +1,9 @@
 use libc2::app::StageID;
 use semver::Version;
 use skyline::{
-    hooks::{getRegionAddress, Region},
+    hooks::{Region, getRegionAddress},
     patching::Patch,
 };
-use strum::EnumCount;
 
 use crate::{config::Config, env, offsets::Offsets};
 

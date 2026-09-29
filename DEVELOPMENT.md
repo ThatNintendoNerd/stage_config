@@ -1,8 +1,5 @@
 # Development
 
-> [!IMPORTANT]
-> This project cannot be compiled without the libc2 library. It remains unreleased due to its incomplete state, but a release is planned at a later date.
-
 ## Setup
 
 The first step is to install [Rust](https://www.rust-lang.org/tools/install).

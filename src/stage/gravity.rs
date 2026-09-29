@@ -1,11 +1,10 @@
-use libc2::app::StageID;
-use smash::app::BattleObjectWorld;
+use libc2::app::{BattleObjectWorld, StageID};
 
 use crate::config::Config;
 
 /// Updates the parameters for gravity if the given stage identifier is assigned specialized parameters.
-pub fn set_gravity_param(stage_id: StageID) {
-    let Some(param) = Config::get().gravity_param.get(&stage_id) else {
+pub fn set_gravity_param(stage_id: &StageID) {
+    let Some(param) = Config::get().gravity_param.get(stage_id) else {
         return;
     };
     let Some(instance) = BattleObjectWorld::instance_mut() else {
@@ -21,7 +20,7 @@ pub fn set_gravity_param(stage_id: StageID) {
     }
 
     if let Some(pos) = &param.pos {
-        instance.gravity_pos.vec[0] = pos.x;
-        instance.gravity_pos.vec[1] = pos.y;
+        *instance.gravity_pos.x_mut() = pos.x;
+        *instance.gravity_pos.y_mut() = pos.y;
     }
 }

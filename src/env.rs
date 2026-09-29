@@ -2,7 +2,7 @@ use std::{ffi::CStr, slice};
 
 use semver::Version;
 use skyline::{
-    hooks::{getRegionAddress, Region},
+    hooks::{Region, getRegionAddress},
     nn,
 };
 
@@ -32,8 +32,8 @@ pub fn app_version() -> Version {
 
 /// Returns a byte slice representing the code segment of the target application.
 pub unsafe fn text() -> &'static [u8] {
-    let ptr = getRegionAddress(Region::Text).cast::<u8>();
-    let len = (getRegionAddress(Region::Rodata) as usize) - (ptr as usize);
+    let ptr = unsafe { getRegionAddress(Region::Text).cast::<u8>() };
+    let len = unsafe { getRegionAddress(Region::Rodata).byte_offset_from_unsigned(ptr) };
 
-    slice::from_raw_parts(ptr, len)
+    unsafe { slice::from_raw_parts(ptr, len) }
 }
