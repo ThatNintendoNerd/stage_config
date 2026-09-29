@@ -1,9 +1,9 @@
 mod gimmick;
 mod gravity;
 mod ground;
-mod settings;
+mod setting;
 
 pub(crate) use gimmick::*;
 pub(crate) use gravity::*;
 pub(crate) use ground::*;
-pub(crate) use settings::*;
+pub(crate) use setting::*;

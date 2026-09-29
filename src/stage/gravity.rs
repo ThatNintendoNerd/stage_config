@@ -2,7 +2,7 @@ use libc2::app::{BattleObjectWorld, StageID};
 
 use crate::config::Config;
 
-/// Updates the parameters for gravity if the given stage identifier is assigned specialized parameters.
+/// Updates gravity settings based on parameters assigned to the working stage identifier.
 pub fn set_gravity_param(stage_id: &StageID) {
     let Some(param) = Config::get().gravity_param.get(stage_id) else {
         return;

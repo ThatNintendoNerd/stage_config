@@ -6,7 +6,7 @@ use crate::{config::Config, offsets::Offsets, stage};
 fn stage_base_pre_setup(stage_base: &StageBase) {
     original!()(stage_base);
 
-    stage::register_all_dynamic_collision(stage_base);
+    stage::register_dynamic_collision(stage_base);
     stage::set_gravity_param(stage_base.stage_id());
 }
 

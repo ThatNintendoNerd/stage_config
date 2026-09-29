@@ -83,16 +83,16 @@ fn patch_create_stage_branch_table() {
     let branch_offset = branch_table[StageID::End_Mario_Castle64 as usize];
     let app_version = env::app_version();
 
-    for stage in Config::get().discard_stage_code.iter().copied() {
-        if !is_valid_stage_id(stage, &app_version) {
+    for stage_id in Config::get().discard_stage_code.iter().copied() {
+        if !is_valid_stage_id(stage_id, &app_version) {
             eprintln!(
-                "[{}] `{stage}` was specified but is not supported on the installed version of the target software.",
+                "[{}] `{stage_id}` was specified but is not supported on the installed version of the target software.",
                 module_path!(),
             );
             continue;
         }
 
-        let offset = branch_table_offset + stage as usize * size_of::<StageID>();
+        let offset = branch_table_offset + stage_id as usize * size_of::<StageID>();
 
         Patch::in_text(offset).data(branch_offset).unwrap();
     }

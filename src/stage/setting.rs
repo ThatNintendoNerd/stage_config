@@ -4,7 +4,7 @@ use libc2::app::{GlobalStageParameter, SpiritsBattleData};
 
 use crate::{config::Config, offsets::Offsets};
 
-/// Updates the stage's spirit battle settings if the working stage identifier is assigned a specialized setting.
+/// Updates specialized stage settings based on parameters assigned to the working stage identifier.
 pub fn set_stage_additional_setting(stage_parameter: &mut GlobalStageParameter) {
     if is_invalid_melee_mode() {
         return;
